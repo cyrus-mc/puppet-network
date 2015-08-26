@@ -1,0 +1,23 @@
+<%- require 'ipaddr' -%>
+# ** managed by puppet (local changes will be overwritten)
+NETWORKING=yes
+<% if !@ipv6_networking %>NETWORKING_IPV6=no
+<% else %>NETWORKING_IPV6=yes
+<% if !@ipv6_gateway.empty? 
+     IPAddr.new(ipv6_gateway) %>IPV6_DEFAULTGW=<%= @ipv6_gateway %>
+<% end -%>
+<% if !@ipv6_gateway_dev.empty? %>IPV6_DEFAULTDEV=<%= @ipv6_gateway_dev %>
+<% end -%>
+<% end -%>
+<% if !@hostname.empty? %>HOSTNAME=<%= @hostname %>
+<% else %>HOSTNAME=<%= scope.lookupvar('::fqdn') %>
+<% end -%>
+<% if !@gateway.empty? 
+     IPAddr.new(gateway) %>GATEWAY=<%= @gateway %>
+<% end -%>
+<% if !@gateway_dev.empty? %>GATEWAYDEV=<%= @gateway_dev %>
+<% end -%>
+<% if !@nis_domain.empty? %>NISDOMAIN=<%= @nis_domain %>
+<% end -%>
+<% if !@nozeroconf %>NOZEROCONF=<%= @nozeroconf %>
+<% end -%>

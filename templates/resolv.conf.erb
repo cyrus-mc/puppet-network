@@ -1,0 +1,34 @@
+<%- require 'ipaddr' -%>
+# ** managed by puppet (local changes will be overwritten)
+<% if !@domain.empty? %>domain <%= domain %><% end %>
+<% if @search_prefix.is_a? Array 
+     if !@search_prefix.empty? %>
+<%= "search " -%>
+<%     @search_prefix.each do |path| -%>
+<%-      if !path.empty? -%>
+<%= "#{path} " -%>
+<%       end
+       end
+     end
+   else %>
+<% if !@search_prefix.empty? %>search <%= search %><% end -%>
+<% end -%>
+<%
+@options.each do |option,value|
+-%>
+options <%= option -%><% if !value.empty? -%>:<%=value -%><%- end %>
+<%-
+end
+%>
+<%- if @servers.is_a? Array
+      @servers.each do |nameserver|
+	IPAddr.new(nameserver)
+-%>
+nameserver <%= nameserver %>
+<%-  
+      end
+    else
+      IPAddr.new(servers)
+%>
+nameserver <%= servers %>
+<%- end -%>
